@@ -20,18 +20,72 @@ camera.position.z = 50;
 //     console.log('spinning')
 //     myVar++;
 // }
-// const button = document.querySelector("button")
-// button.addEventListener("click", spinFaster)
+
 
 // let speedUp = .01
 // let speedDown = .01
+let myReq
+let speed = 0;
+const spinBttn = document.querySelector("#spin").addEventListener('click', handleClick)
+const stopBttn = document.querySelector("#stop-spin").addEventListener('click', stopAnimate)
+// document.addEventListener('keydown', handleClick)
+// document.addEventListener('keydown', stopAnimate)
+document.addEventListener('keydown', move)
 
+function handleClick() {
+    animate()
+    speedUp()
+}
+
+function render() {
+    renderer.render( scene, camera );
+}
 
 function animate() {
-    requestAnimationFrame( animate );
+    myReq = requestAnimationFrame( animate )
     cube.rotation.x += .01;
-    // cube.rotation.y += .01;
+    cube.rotation.y += .01;
     renderer.render( scene, camera );
-    console.log(cube.rotation)
 }
-animate();
+
+function stopAnimate() {
+    cancelAnimationFrame(myReq)
+    speedDown()
+}
+
+function speedUp() {
+    speed++
+    document.querySelector('#speed').innerHTML = `Speed = ${speed}`
+}
+
+function speedDown() {
+    if(speed > 0) {
+        speed--
+        document.querySelector('#speed').innerHTML = `Speed = ${speed}`
+    }
+}
+
+function move() {
+    if(event.keyCode === 39) {
+        cube.position.x += 3
+        renderer.render( scene, camera );
+    }
+
+    if(event.keyCode === 37) {
+        cube.position.x -= 3
+        renderer.render( scene, camera );
+    }
+
+    if(event.keyCode === 38) {
+        cube.position.y += 3
+        renderer.render( scene, camera );
+    }
+
+    if(event.keyCode === 40) {
+        cube.position.y -= 3
+        renderer.render( scene, camera );
+    }
+}
+
+
+render();
