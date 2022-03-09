@@ -51,21 +51,31 @@ const track = audioContext.createMediaElementSource(audioElement)
 track.connect(audioContext.destination)
 
 document.querySelector('#play').addEventListener('click', function() {
-    debugger;
+    // debugger;
     if(audioContext.state === 'suspended') {
         audioContext.resume()
-
-    } else {
-        audio
-    }
-
-    if(this.dataset.playing === true) {
+        this.dataset.playing = 'false'
+    } 
+    // debugger;
+    if(this.dataset.playing === 'true') {
         audioElement.pause()
-    } else {
+        this.dataset.playing = 'false'
+    } else if (this.dataset.playing === 'false') {
         audioElement.play()
+        this.dataset.playing = 'true'
 
     }
 })
+
+const gainNode = audioContext.createGain();
+track.connect(gainNode).connect(audioContext.destination);
+
+document.querySelector('input').addEventListener('input', function() {
+     gainNode.gain.value = this.value
+})
+
+
+
 
 
 
